@@ -1,0 +1,3 @@
+[submodule "Drivers/groza-t55_sm"]
+	path = Drivers/groza-t55_sm
+	url = https://github.com/bazhen-paseka/groza-t55_sm.git
