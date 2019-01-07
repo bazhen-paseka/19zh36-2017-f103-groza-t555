@@ -47,8 +47,8 @@
 
 /* USER CODE BEGIN Includes */
 
-
 	#include "groza-t55_sm.h"
+	#include "ringbuffer_dma_sm.h"
 
 /* USER CODE END Includes */
 
@@ -107,6 +107,7 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  	  RingBuffer_DMA_Connect();
   	  Groza_t55_init();
 
   /* USER CODE END 2 */
@@ -116,6 +117,7 @@ int main(void)
   while (1)
   {
 	  Groza_t55_main();
+	  RingBuffer_DMA_Main();
 
   /* USER CODE END WHILE */
 
