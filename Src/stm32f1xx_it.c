@@ -36,13 +36,19 @@
 #include "stm32f1xx_it.h"
 
 /* USER CODE BEGIN 0 */
-extern uint32_t tim_k0;
-extern uint32_t tim_k1;
-extern uint32_t tim_k2;
-extern uint32_t tim_k3;
+
+	#include "groza-t55_sm.h"
+	//***************************************
+
+	extern uint32_t tim_k0;
+	extern uint32_t tim_k1;
+	extern uint32_t tim_k2;
+	extern uint32_t tim_k3;
+
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
+extern TIM_HandleTypeDef htim3;
 extern DMA_HandleTypeDef hdma_usart3_rx;
 
 /******************************************************************************/
@@ -263,6 +269,22 @@ void DMA1_Channel3_IRQHandler(void)
   /* USER CODE BEGIN DMA1_Channel3_IRQn 1 */
 
   /* USER CODE END DMA1_Channel3_IRQn 1 */
+}
+
+/**
+* @brief This function handles TIM3 global interrupt.
+*/
+void TIM3_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM3_IRQn 0 */
+
+	Set_Flag_60_Sec(1);
+
+  /* USER CODE END TIM3_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim3);
+  /* USER CODE BEGIN TIM3_IRQn 1 */
+
+  /* USER CODE END TIM3_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

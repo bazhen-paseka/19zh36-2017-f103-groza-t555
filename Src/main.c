@@ -105,7 +105,11 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM4_Init();
   MX_USART3_UART_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+
+  	  HAL_TIM_Base_Start(&htim3);
+  	  HAL_TIM_Base_Start_IT(&htim3);
 
 	  Groza_t55_init();
 	  RingBuffer_DMA_Connect();
@@ -116,8 +120,12 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  Groza_t55_main();
-	  RingBuffer_DMA_Main();
+	  if (Get_Flag_60_Sec() == 1)
+	  {
+		  Groza_t55_main();
+		  RingBuffer_DMA_Main( (int)Value_T55(1), (int)Value_T55(2), (int)Value_T55(3), (int)Value_T55(4));
+		  Set_Flag_60_Sec(0);
+	  }
 
   /* USER CODE END WHILE */
 
