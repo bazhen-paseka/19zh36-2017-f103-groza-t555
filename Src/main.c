@@ -122,8 +122,11 @@ int main(void)
   {
 	  if (Get_Flag_60_Sec() == 1)
 	  {
-		  Groza_t55_main();
-		  RingBuffer_DMA_Main( Value_T55(1), Value_T55(2), Value_T55(3), Value_T55(4) );
+		  char http_req[200];
+		  uint8_t size_of_http_req = Groza_t55_main(http_req);
+
+		  RingBuffer_DMA_Main( http_req, size_of_http_req );
+
 		  Set_Flag_60_Sec(0);
 	  }
 
