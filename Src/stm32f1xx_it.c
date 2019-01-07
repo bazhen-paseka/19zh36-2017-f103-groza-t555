@@ -38,12 +38,6 @@
 /* USER CODE BEGIN 0 */
 
 	#include "groza-t55_sm.h"
-	//***************************************
-
-	extern uint32_t tim_k0;
-	extern uint32_t tim_k1;
-	extern uint32_t tim_k2;
-	extern uint32_t tim_k3;
 
 /* USER CODE END 0 */
 
@@ -207,7 +201,9 @@ void SysTick_Handler(void)
 void EXTI0_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI0_IRQn 0 */
-	tim_k0 = TIM4->CNT;
+
+	Timer_Update(0, TIM4->CNT);
+
   /* USER CODE END EXTI0_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);
   /* USER CODE BEGIN EXTI0_IRQn 1 */
@@ -221,7 +217,9 @@ void EXTI0_IRQHandler(void)
 void EXTI1_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI1_IRQn 0 */
-	tim_k1 = TIM4->CNT;
+
+	Timer_Update(1, TIM4->CNT);
+
   /* USER CODE END EXTI1_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_1);
   /* USER CODE BEGIN EXTI1_IRQn 1 */
@@ -235,7 +233,9 @@ void EXTI1_IRQHandler(void)
 void EXTI2_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI2_IRQn 0 */
-	tim_k2 = TIM4->CNT;
+
+	Timer_Update(2, TIM4->CNT);
+
   /* USER CODE END EXTI2_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_2);
   /* USER CODE BEGIN EXTI2_IRQn 1 */
@@ -249,7 +249,9 @@ void EXTI2_IRQHandler(void)
 void EXTI3_IRQHandler(void)
 {
   /* USER CODE BEGIN EXTI3_IRQn 0 */
-	tim_k3 = TIM4->CNT;
+
+	Timer_Update(3, TIM4->CNT);
+
   /* USER CODE END EXTI3_IRQn 0 */
   HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_3);
   /* USER CODE BEGIN EXTI3_IRQn 1 */

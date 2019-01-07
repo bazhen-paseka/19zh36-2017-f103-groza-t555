@@ -123,7 +123,7 @@ int main(void)
 	  if (Get_Flag_60_Sec() == 1)
 	  {
 		  Groza_t55_main();
-		  RingBuffer_DMA_Main( (int)Value_T55(1), (int)Value_T55(2), (int)Value_T55(3), (int)Value_T55(4));
+		  RingBuffer_DMA_Main( Value_T55(1), Value_T55(2), Value_T55(3), Value_T55(4) );
 		  Set_Flag_60_Sec(0);
 	  }
 
