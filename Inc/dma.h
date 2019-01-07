@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : TIM.c
-  * Description        : This file provides code for the configuration
-  *                      of the TIM instances.
+  * File Name          : dma.h
+  * Description        : This file contains all the function prototypes for
+  *                      the dma.c file
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -36,87 +36,40 @@
   *
   ******************************************************************************
   */
+/* Define to prevent recursive inclusion -------------------------------------*/
+#ifndef __dma_H
+#define __dma_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "tim.h"
+#include "stm32f1xx_hal.h"
+#include "main.h"
 
-/* USER CODE BEGIN 0 */
+/* DMA memory to memory transfer handles -------------------------------------*/
+extern void _Error_Handler(char*, int);
 
-/* USER CODE END 0 */
+/* USER CODE BEGIN Includes */
 
-TIM_HandleTypeDef htim4;
+/* USER CODE END Includes */
 
-/* TIM4 init function */
-void MX_TIM4_Init(void)
-{
-  TIM_ClockConfigTypeDef sClockSourceConfig;
-  TIM_MasterConfigTypeDef sMasterConfig;
+/* USER CODE BEGIN Private defines */
 
-  htim4.Instance = TIM4;
-  htim4.Init.Prescaler = 72-1;
-  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim4.Init.Period = 65000;
-  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+/* USER CODE END Private defines */
 
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+void MX_DMA_Init(void);
 
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
-  {
-    _Error_Handler(__FILE__, __LINE__);
-  }
+/* USER CODE BEGIN Prototypes */
 
+/* USER CODE END Prototypes */
+
+#ifdef __cplusplus
 }
+#endif
 
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
-{
-
-  if(tim_baseHandle->Instance==TIM4)
-  {
-  /* USER CODE BEGIN TIM4_MspInit 0 */
-
-  /* USER CODE END TIM4_MspInit 0 */
-    /* TIM4 clock enable */
-    __HAL_RCC_TIM4_CLK_ENABLE();
-  /* USER CODE BEGIN TIM4_MspInit 1 */
-
-  /* USER CODE END TIM4_MspInit 1 */
-  }
-}
-
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
-{
-
-  if(tim_baseHandle->Instance==TIM4)
-  {
-  /* USER CODE BEGIN TIM4_MspDeInit 0 */
-
-  /* USER CODE END TIM4_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_TIM4_CLK_DISABLE();
-  /* USER CODE BEGIN TIM4_MspDeInit 1 */
-
-  /* USER CODE END TIM4_MspDeInit 1 */
-  }
-} 
-
-/* USER CODE BEGIN 1 */
-
-/* USER CODE END 1 */
-
-/**
-  * @}
-  */
+#endif /* __dma_H */
 
 /**
   * @}
