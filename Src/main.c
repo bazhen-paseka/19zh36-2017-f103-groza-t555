@@ -40,11 +40,15 @@
 #include "main.h"
 #include "stm32f1xx_hal.h"
 #include "adc.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* USER CODE BEGIN Includes */
-#include <string.h>
+
+	//#include <string.h>
+	#include "groza-t55_sm.h"
+
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -97,17 +101,22 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-  char DataChar[100];
+//  char DataChar[100];
+//
+//	sprintf(DataChar,"\r\n19zh36 GROZA-T55\r\nUART1 for debug Start\r\nSpeed 38400\r\n");
+//	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+	Groza_t55_init();
 
-	sprintf(DataChar,"\r\n19zh36 GROZA-T55\r\nUART1 for debug Start\r\nSpeed 38400\r\n");
-	HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  Groza_t55_main();
 
   /* USER CODE END WHILE */
 
