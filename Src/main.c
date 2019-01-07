@@ -107,8 +107,8 @@ int main(void)
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  	  RingBuffer_DMA_Connect();
-  	  Groza_t55_init();
+	  Groza_t55_init();
+	  RingBuffer_DMA_Connect();
 
   /* USER CODE END 2 */
 
