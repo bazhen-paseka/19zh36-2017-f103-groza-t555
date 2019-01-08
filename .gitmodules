@@ -1,3 +1,6 @@
 [submodule "Drivers/groza-t55_sm"]
 	path = Drivers/groza-t55_sm
 	url = https://github.com/bazhen-paseka/groza-t55_sm.git
+[submodule "Drivers/ringbuffer_dma_sm"]
+	path = Drivers/ringbuffer_dma_sm
+	url = https://github.com/bazhen-paseka/ringbuffer_dma_sm.git
