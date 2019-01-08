@@ -123,18 +123,18 @@ int main(void)
 	  if (Get_Flag_60_Sec() == 1)
 	  {
 		  char http_req[200];
-		  uint8_t size_of_http_req = 0;
+
 		  static uint8_t circle=0;
 
 		  if (circle < CIRCLE_QNT)
 		  {
-			  Groza_t55_main(circle, http_req, &size_of_http_req);
+			  Groza_t55_main(circle, http_req );
 			  circle++;
 		  }
 
 		  if (circle == CIRCLE_QNT)
 		  {
-			  RingBuffer_DMA_Main( http_req, size_of_http_req );
+			  RingBuffer_DMA_Main(http_req);
 			  circle = 0;
 		  }
 		  Set_Flag_60_Sec(0);
