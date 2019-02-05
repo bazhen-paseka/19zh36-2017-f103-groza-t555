@@ -7,3 +7,6 @@
 [submodule "Drivers/average_calc_3_from_5"]
 	path = Drivers/average_calc_3_from_5
 	url = https://github.com/bazhen-paseka/average_calc_3_from_5.git
+[submodule "Drivers/adc_light_stm32f103_hal_sm"]
+	path = Drivers/adc_light_stm32f103_hal_sm
+	url = https://github.com/bazhen-paseka/adc_light_stm32f103_hal_sm.git
