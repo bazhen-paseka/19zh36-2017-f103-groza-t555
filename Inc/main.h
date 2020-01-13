@@ -49,10 +49,12 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define STROB14_Pin GPIO_PIN_14
-#define STROB14_GPIO_Port GPIOC
-#define STROB15_Pin GPIO_PIN_15
-#define STROB15_GPIO_Port GPIOC
+#define STROBE_Z_Pin GPIO_PIN_13
+#define STROBE_Z_GPIO_Port GPIOC
+#define STROBE_Y_Pin GPIO_PIN_14
+#define STROBE_Y_GPIO_Port GPIOC
+#define STROBE_X_Pin GPIO_PIN_15
+#define STROBE_X_GPIO_Port GPIOC
 #define KANAL00_Pin GPIO_PIN_0
 #define KANAL00_GPIO_Port GPIOA
 #define KANAL00_EXTI_IRQn EXTI0_IRQn

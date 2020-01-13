@@ -49,6 +49,7 @@
 
 	#include "groza-t55_sm.h"
 	#include "ringbuffer_dma_sm.h"
+	#include "groza-t55_config.h"
 
 /* USER CODE END Includes */
 
@@ -112,28 +113,24 @@ int main(void)
   	  HAL_TIM_Base_Start_IT(&htim3);
 
 	  Groza_t55_init();
+	#if (TEST_STROBE == 1)
+	  TestStrobe();
+	#endif
 	  RingBuffer_DMA_Connect();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  if (Get_Flag_60_Sec() == 1)
-	  {
+  while (1) {
+	  if (Get_Flag_60_Sec() == 1) {
 		  char http_req[200];
-
 		  static uint8_t circle=0;
-
-		  if (circle < CIRCLE_QNT)
-		  {
+		  if (circle < CIRCLE_QNT) {
 			  Groza_t55_main(circle, http_req );
 			  circle++;
 		  }
-
-		  if (circle == CIRCLE_QNT)
-		  {
+		  if (circle == CIRCLE_QNT) {
 			  RingBuffer_DMA_Main(http_req);
 			  circle = 0;
 		  }
