@@ -114,7 +114,10 @@ int main(void)
 
 	  Groza_t55_init();
 	#if (TEST_STROBE == 1)
-	  TestStrobe();
+		do {
+			TestStrobe();
+		}
+		while (1);
 	#endif
 	  RingBuffer_DMA_Connect();
 
@@ -136,6 +139,7 @@ int main(void)
 		  }
 		  Set_Flag_60_Sec(0);
 	  }
+	  TestStrobe();
 
   /* USER CODE END WHILE */
 
