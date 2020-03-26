@@ -76,6 +76,10 @@ void Error_Handler(void);
 #define CHANNEL_3_Pin GPIO_PIN_3
 #define CHANNEL_3_GPIO_Port GPIOA
 #define CHANNEL_3_EXTI_IRQn EXTI3_IRQn
+#define CE_Pin GPIO_PIN_12
+#define CE_GPIO_Port GPIOB
+#define CSN_Pin GPIO_PIN_8
+#define CSN_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
