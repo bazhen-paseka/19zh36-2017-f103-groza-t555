@@ -22,6 +22,8 @@
 #include "main.h"
 #include "adc.h"
 #include "dma.h"
+#include "i2c.h"
+#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -77,7 +79,6 @@ int main(void)
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
-  
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -103,23 +104,26 @@ int main(void)
   MX_TIM4_Init();
   MX_USART3_UART_Init();
   MX_TIM3_Init();
+  MX_I2C1_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-  	  HAL_TIM_Base_Start(&htim3);
+  	  Groza_t55_init();
+
+		#if (TEST_STROBE == 1)
+			do {
+				TestStrobe();
+			}
+			while (1);
+		#endif
+
+	  RingBuffer_DMA_Connect();
+
+	  HAL_TIM_Base_Start(&htim3);
   	  HAL_TIM_Base_Start_IT(&htim3);
 
-	#if (TEST_STROBE == 1)
-		do {
-			TestStrobe();
-		}
-		while (1);
-	#endif
-	  RingBuffer_DMA_Connect();
-	  Groza_t55_init();
 
   /* USER CODE END 2 */
- 
- 
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
