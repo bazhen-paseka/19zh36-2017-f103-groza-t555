@@ -16,3 +16,6 @@
 [submodule "Drivers/i2c_TechMaker_sm"]
 	path = Drivers/i2c_TechMaker_sm
 	url = https://github.com/bazhen-paseka/i2c_TechMaker_sm.git
+[submodule "Drivers/nrf24l01_sm"]
+	path = Drivers/nrf24l01_sm
+	url = https://github.com/bazhen-paseka/nrf24l01_sm.git
