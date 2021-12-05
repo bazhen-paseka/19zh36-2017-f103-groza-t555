@@ -141,13 +141,13 @@ static uint8_t sec_counter;
 		if (sec_counter >= 20) {
 			sec_counter = 0 ;
 
-			char http_req[200];
+			char http_req[0xFF];
 			static uint8_t circle=0;
 			if (circle < CIRCLE_QNT) {
 			  Groza_t55_main(circle, http_req );
 			  circle++;
 			}
-			if (circle == CIRCLE_QNT) {
+			if (circle >= CIRCLE_QNT) {
 			  RingBuffer_DMA_Main(http_req);
 			  circle = 0;
 			}
