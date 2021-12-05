@@ -4,7 +4,7 @@
 //******************************************************************************************
 
 	#define TEST_STROBE			0
-
+	#define SOFT_VERSION 		180
 	#define STROBE_DURATION		10UL
 	#define MEASUREMENT_TIME	500UL
 
