@@ -128,22 +128,33 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 while (1) {
 //	NRF24L01_Module();
+static uint8_t sec_counter;
 
-	if (Get_Flag_60_Sec() == 1) {
-	  char http_req[200];
-	  static uint8_t circle=0;
-	  if (circle < CIRCLE_QNT) {
-		  Groza_t55_main(circle, http_req );
-		  circle++;
-	  }
-	  if (circle == CIRCLE_QNT) {
-		  RingBuffer_DMA_Main(http_req);
-		  circle = 0;
-	  }
-	  Set_Flag_60_Sec(0);
+	if (Get_Flag_1_Sec() == 1) {
+		Set_Flag_1_Sec(0);
+		sec_counter++;
+		char uart_buffer[0xFF];
+		sprintf(uart_buffer," %02d\r", sec_counter );
+		HAL_UART_Transmit(&huart1, (uint8_t *)uart_buffer, strlen(uart_buffer), 100);
+
+		if (sec_counter >= 20) {
+			sec_counter = 0 ;
+
+			char http_req[200];
+			static uint8_t circle=0;
+			if (circle < CIRCLE_QNT) {
+			  Groza_t55_main(circle, http_req );
+			  circle++;
+			}
+			if (circle == CIRCLE_QNT) {
+			  RingBuffer_DMA_Main(http_req);
+			  circle = 0;
+			}
+		} else {
+			TestStrobe(sec_counter);
+		}
 	}
 
-	TestStrobe();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -171,7 +182,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL8;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
