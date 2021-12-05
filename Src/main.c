@@ -127,7 +127,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 while (1) {
-	NRF24L01_Module();
+//	NRF24L01_Module();
 
 	if (Get_Flag_60_Sec() == 1) {
 	  char http_req[200];
