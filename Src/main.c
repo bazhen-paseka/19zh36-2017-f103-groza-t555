@@ -34,6 +34,7 @@
 	#include "ringbuffer_dma_sm.h"
 	#include "groza-t55_config.h"
 	#include "nrf24l01_config.h"
+	#include "lcd1602_fc113_sm.h"
 
 /* USER CODE END Includes */
 
@@ -112,7 +113,7 @@ int main(void)
 
 		#if (TEST_STROBE == 1)
 			do {
-				TestStrobe();
+				TestStrobe(13);
 			}
 			while (1);
 		#endif
