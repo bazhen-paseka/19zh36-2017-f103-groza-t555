@@ -3,10 +3,10 @@
 #define GROZA_T55_CONFIG_H_INCLUDED
 //******************************************************************************************
 
-	#define SOFT_VERSION 		180
+	#define SOFT_VERSION 		190
 	#define TEST_STROBE			0
 
-	#define DEVICE_QNT 			6
+	#define DEVICE_QNT 			8
 	#define CIRCLE_QNT 			5
 
 	#define STROBE_DURATION		10UL
