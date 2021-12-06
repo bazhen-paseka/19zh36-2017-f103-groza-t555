@@ -141,14 +141,15 @@ static uint8_t sec_counter = 20;
 		if (sec_counter == 0) {
 			sec_counter = 20 ;
 
-			char http_req[0xFF];
+			char http_req_1[0xFF];
+			char http_req_2[0xFF];
 			static uint8_t circle=0;
 			if (circle < CIRCLE_QNT) {
-			  Groza_t55_main(circle, http_req );
+			  Groza_t55_main( circle, http_req_1, http_req_2);
 			  circle++;
 			}
 			if (circle >= CIRCLE_QNT) {
-			  RingBuffer_DMA_Main(http_req);
+			  RingBuffer_DMA_Main( http_req_1, http_req_2 );
 			  circle = 0;
 			}
 		} else {

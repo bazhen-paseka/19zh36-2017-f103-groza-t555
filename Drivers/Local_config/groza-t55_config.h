@@ -6,7 +6,7 @@
 	#define SOFT_VERSION 		190
 	#define TEST_STROBE			0
 
-	#define DEVICE_QNT 			8
+	#define DEVICE_QNT 			10
 	#define CIRCLE_QNT 			5
 
 	#define STROBE_DURATION		10UL
