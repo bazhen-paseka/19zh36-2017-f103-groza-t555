@@ -129,26 +129,27 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 while (1) {
 //	NRF24L01_Module();
-static uint8_t sec_counter;
+static uint8_t sec_counter = 20;
 
 	if (Get_Flag_1_Sec() == 1) {
 		Set_Flag_1_Sec(0);
-		sec_counter++;
+		sec_counter--;
 		char uart_buffer[0xFF];
 		sprintf(uart_buffer," %02d\r", sec_counter );
 		HAL_UART_Transmit(&huart1, (uint8_t *)uart_buffer, strlen(uart_buffer), 100);
 
-		if (sec_counter >= 20) {
-			sec_counter = 0 ;
+		if (sec_counter == 0) {
+			sec_counter = 20 ;
 
-			char http_req[0xFF];
+			char http_req_1[0xFF];
+			char http_req_2[0xFF];
 			static uint8_t circle=0;
 			if (circle < CIRCLE_QNT) {
-			  Groza_t55_main(circle, http_req );
+			  Groza_t55_main( circle, http_req_1, http_req_2);
 			  circle++;
 			}
 			if (circle >= CIRCLE_QNT) {
-			  RingBuffer_DMA_Main(http_req);
+			  RingBuffer_DMA_Main( http_req_1, http_req_2 );
 			  circle = 0;
 			}
 		} else {
