@@ -118,7 +118,7 @@ int main(void)
 
 	RingBuffer_DMA_Connect();
 
-	HAL_TIM_Base_Start(&htim3);
+	//	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
 
   /* USER CODE END 2 */
