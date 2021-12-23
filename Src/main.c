@@ -109,6 +109,7 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
+	PointStr MyStr = {0};
 	Groza_t55_init();
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
 	HAL_GPIO_WritePin(BUTTON_GND_GPIO_Port, BUTTON_GND_Pin, RESET );
@@ -121,48 +122,78 @@ int main(void)
 	//	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
 
+	char DataChar[0xFF];
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 while (1) {
 //	NRF24L01_Module();
-	static uint8_t 	sec_counter = 	20 ;
+	#define COUNTER	20
+	static uint8_t 	sec_counter = 	COUNTER ;
 	static uint8_t 	circle		=	0  ;
 
 	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
 		if (Get_Flag_1_Sec() == 1) {
 			Groza_t55_test();
-			sec_counter = 20 ;
+			sec_counter = COUNTER ;
 			Set_Flag_1_Sec(0);
 			circle = 0 ;
 		}
 	}
 
 	if (Get_Flag_1_Sec() == 1) {
-		Set_Flag_1_Sec(0);
 		sec_counter--;
 		char uart_buffer[0xFF];
 		sprintf(uart_buffer," %02d\r", sec_counter );
 		HAL_UART_Transmit(&huart1, (uint8_t *)uart_buffer, strlen(uart_buffer), 100);
 
-		if (sec_counter == 0) {
-			sec_counter = 20 ;
-
-			char http_req_1[0xFF];
-			char http_req_2[0xFF];
+		if (sec_counter != 0) {
+			Groza_t55_test();
+		} else {
+			sec_counter = COUNTER ;
+			char http_req_1[0xFF] = { 0 } ;
+			char http_req_2[0xFF] = { 0 } ;
 
 			if (circle < CIRCLE_QNT) {
-			  Groza_t55_main( circle, http_req_1, http_req_2);
-			  circle++;
+				Measurement( &MyStr, circle);
+				circle++;
 			}
+
 			if (circle >= CIRCLE_QNT) {
-			  RingBuffer_DMA_Main( http_req_1, http_req_2 );
-			  circle = 0;
+				Groza_t55_main( circle, http_req_1, http_req_2);
+
+				sprintf(DataChar,"\r\n" );
+				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+				uint32_t aver_res_u32[DEVICE_QNT];
+				for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
+					sprintf(DataChar,"%d) ", (int)(channel_u8+1) );
+					HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+
+					aver_res_u32[channel_u8] = Calc_Average(MyStr.point_u32[channel_u8], CIRCLE_QNT);
+
+					sprintf(DataChar," (%d)\r\n", (int)aver_res_u32[channel_u8] );
+					HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+				}
+				sprintf(http_req_1, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+								(int)aver_res_u32[0],
+								(int)aver_res_u32[1],
+								(int)aver_res_u32[2],
+								(int)aver_res_u32[3],
+								(int)aver_res_u32[4],
+								(int)aver_res_u32[5],
+								(int)aver_res_u32[6],
+								(int)aver_res_u32[7] );
+				sprintf(http_req_2, "&field1=%d&field2=%d\r\n\r\n",
+								(int)aver_res_u32[8],
+								(int)aver_res_u32[9] );
+				sprintf(DataChar,"\r\n" );
+				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100) ;
+				RingBuffer_DMA_Main( http_req_1, http_req_2 );
+				circle = 0;
 			}
-		} else {
-			Groza_t55_test();
 		}
+		Set_Flag_1_Sec(0);
 	}
 
     /* USER CODE END WHILE */
