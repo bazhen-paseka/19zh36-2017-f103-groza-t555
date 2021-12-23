@@ -109,19 +109,17 @@ int main(void)
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
-  	  Groza_t55_init();
+	Groza_t55_init();
+	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
+	HAL_GPIO_WritePin(BUTTON_GND_GPIO_Port, BUTTON_GND_Pin, RESET );
+	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
+		Groza_t55_test();
+	}
 
-		#if (TEST_STROBE == 1)
-			do {
-				TestStrobe(13);
-			}
-			while (1);
-		#endif
+	RingBuffer_DMA_Connect();
 
-	  RingBuffer_DMA_Connect();
-
-	  HAL_TIM_Base_Start(&htim3);
-  	  HAL_TIM_Base_Start_IT(&htim3);
+	//	HAL_TIM_Base_Start(&htim3);
+	HAL_TIM_Base_Start_IT(&htim3);
 
   /* USER CODE END 2 */
 
@@ -129,7 +127,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 while (1) {
 //	NRF24L01_Module();
-static uint8_t sec_counter = 20;
+	static uint8_t 	sec_counter = 	20 ;
+	static uint8_t 	circle		=	0  ;
+
+	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
+		if (Get_Flag_1_Sec() == 1) {
+			Groza_t55_test();
+			sec_counter = 20 ;
+			Set_Flag_1_Sec(0);
+			circle = 0 ;
+		}
+	}
 
 	if (Get_Flag_1_Sec() == 1) {
 		Set_Flag_1_Sec(0);
@@ -143,7 +151,7 @@ static uint8_t sec_counter = 20;
 
 			char http_req_1[0xFF];
 			char http_req_2[0xFF];
-			static uint8_t circle=0;
+
 			if (circle < CIRCLE_QNT) {
 			  Groza_t55_main( circle, http_req_1, http_req_2);
 			  circle++;
@@ -153,7 +161,7 @@ static uint8_t sec_counter = 20;
 			  circle = 0;
 			}
 		} else {
-			TestStrobe(sec_counter);
+			Groza_t55_test();
 		}
 	}
 
@@ -245,4 +253,3 @@ void assert_failed(uint8_t *file, uint32_t line)
 }
 #endif /* USE_FULL_ASSERT */
 
-/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
