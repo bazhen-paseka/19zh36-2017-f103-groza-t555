@@ -112,118 +112,78 @@ int main(void)
 	PointStr MyStr0 = {0};
 	PointStr MyStr1 = {0};
 	PointStr MyStr2 = {0};
+	char DataChar[0xFF];
+
 	Groza_t55_init();
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
 	HAL_GPIO_WritePin(BUTTON_GND_GPIO_Port, BUTTON_GND_Pin, RESET );
 	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
-		Groza_t55_test();
+		Measurement( &MyStr0, 0);
 	}
 
 	RingBuffer_DMA_Connect();
-
 	//	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
-
-	char DataChar[0xFF];
-	uint8_t 	circle_0	=	0  ;
-	uint8_t 	circle_1	=	0  ;
-	uint8_t 	circle_2	=	0  ;
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 while (1) {
-//	NRF24L01_Module();
+	//	NRF24L01_Module();
 	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
 		if (Get_Flag_1_Sec() == 1) {
-			Groza_t55_test();
+			Measurement( &MyStr0, 0);
 			Set_Flag_1_Sec(0);
-			circle_0 = 0 ;
-			circle_1 = 0 ;
-			circle_2 = 0 ;
 		}
 	}
 
-	if (Get_Flag_1_Sec() == 1) {
-		Set_Flag_1_Sec(0);
-
-		if (circle_0 < CIRCLE_QNT) {
-			Measurement( &MyStr0, circle_0);
-			circle_0++;
-		}
-
-		if (circle_0 == CIRCLE_QNT) {
-			circle_0 = 0;
-			sprintf(DataChar,"\r\n" );
-			HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-			for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
-				sprintf(DataChar,"A%d%d)\t", (int)circle_1, (int)(channel_u8) );
+	for (			uint8_t line2=0; line2 < CIRCLE_QNT; line2++ )	{
+		for (		uint8_t line1=0; line1 < CIRCLE_QNT; line1++ )	{
+			for (	uint8_t line0=0; line0 < CIRCLE_QNT; line0++ )	{
+				while (Get_Flag_1_Sec() == 0) {	/* wait on flag 1 Sec */ }
+				Set_Flag_1_Sec(0);
+				Measurement( &MyStr0, line0);
+			}//for(line0)
+			for (uint8_t device = 0; device < DEVICE_QNT; device++) {
+				sprintf(DataChar,"  B%dA%d\t", (int)line2, (int)line1 );
 				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-				MyStr1.point_u32[channel_u8][circle_1] = Calc_Average(MyStr0.point_u32[channel_u8], CIRCLE_QNT);
-				sprintf(DataChar," (%d)\r\n", (int)MyStr1.point_u32[channel_u8][circle_1] );
-				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+				MyStr1.point_u32[device][line1] = Calc_Average(MyStr0.point_u32[device], CIRCLE_QNT);
 			}
-			sprintf(DataChar,"\r\n" );
+		}//for(line1)
+		for (uint8_t device = 0; device < DEVICE_QNT; device++) {
+			sprintf(DataChar,"  B%d\t", (int)line2 );
 			HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-			circle_1++;
-
-			if (circle_1 == CIRCLE_QNT) {
-				circle_1 = 0;
-				sprintf(DataChar,"\r\n" );
-				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-				for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
-					sprintf(DataChar,"B%d%d)\t", (int)circle_2, (int)(channel_u8) );
-					HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-					MyStr2.point_u32[channel_u8][circle_2] = Calc_Average(MyStr1.point_u32[channel_u8], CIRCLE_QNT);
-					sprintf(DataChar," (%d)\r\n", (int)MyStr2.point_u32[channel_u8][circle_2] );
-					HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-				}
-				sprintf(DataChar,"\r\n" );
-				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-				circle_2++;
-
-				if (circle_2 == CIRCLE_QNT) {
-					circle_2 = 0;
-					uint32_t aver_res_u32[DEVICE_QNT];
-					for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
-						sprintf(DataChar,"C_%d)\t", (int)(channel_u8) );
-						HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-
-						aver_res_u32[channel_u8] = Calc_Average(MyStr2.point_u32[channel_u8], CIRCLE_QNT);
-							sprintf(DataChar," (%d)\r\n", (int)aver_res_u32[channel_u8] );
-						HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
-					}
-					sprintf(DataChar,"\r\n" );
-					HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100) ;
-
-					char http_req_1[0xFF] = { 0 } ;
-					sprintf(http_req_1, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
-									(int)aver_res_u32[0],
-									(int)aver_res_u32[1],
-									(int)aver_res_u32[2],
-									(int)aver_res_u32[3],
-									(int)aver_res_u32[4],
-									(int)aver_res_u32[5],
-									(int)aver_res_u32[6],
-									(int)aver_res_u32[7] );
-
-					char http_req_2[0xFF] = { 0 } ;
-					sprintf(http_req_2, "&field1=%d&field2=%d\r\n\r\n",
-									(int)aver_res_u32[8],
-									(int)aver_res_u32[9] );
-
-					RingBuffer_DMA_Main( http_req_1, http_req_2 );
-				}
-			}
+			MyStr2.point_u32[device][line2] = Calc_Average(MyStr1.point_u32[device], CIRCLE_QNT);
 		}
+	}//for(line2)
+
+	uint32_t aver_res_u32[DEVICE_QNT];
+	for (uint8_t device = 0; device < DEVICE_QNT; device++) {
+		sprintf(DataChar,"  C\t" );
+		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+		aver_res_u32[device] = Calc_Average(MyStr2.point_u32[device], CIRCLE_QNT);
 	}
+
+	char http_req[0xFF] = { 0 } ;
+	char apiKey1[] = THINGSPEAK_API_KEY_1 ;
+	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+					(int)aver_res_u32[0],
+					(int)aver_res_u32[1],
+					(int)aver_res_u32[2],
+					(int)aver_res_u32[3],
+					(int)aver_res_u32[4],
+					(int)aver_res_u32[5],
+					(int)aver_res_u32[6],
+					(int)aver_res_u32[7] );
+	RingBuffer_DMA_Main(http_req, apiKey1);
+	HAL_Delay(500);
+
+	sprintf(http_req, "&field1=%d&field2=%d\r\n\r\n",
+					(int)aver_res_u32[8],
+					(int)aver_res_u32[9] );
+	char apiKey2[] = THINGSPEAK_API_KEY_2 ;
+	RingBuffer_DMA_Main(http_req, apiKey2);
 
     /* USER CODE END WHILE */
 
