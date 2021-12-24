@@ -3,7 +3,7 @@
 #define GROZA_T55_CONFIG_H_INCLUDED
 //******************************************************************************************
 
-	#define SOFT_VERSION 		210
+	#define SOFT_VERSION 		220
 
 	#define DEVICE_QNT 			10
 	#define CIRCLE_QNT 			5
