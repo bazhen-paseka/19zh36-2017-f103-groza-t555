@@ -119,7 +119,7 @@ int main(void)
 		Groza_t55_test();
 	}
 
-	RingBuffer_DMA_Connect();
+	//RingBuffer_DMA_Connect();
 
 	//	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
@@ -144,6 +144,39 @@ while (1) {
 			circle_2 = 0 ;
 		}
 	}
+
+
+while(1) {
+	for (int c0=0; c0<CIRCLE_QNT; c0++)	{
+		for (int c1=0; c1<CIRCLE_QNT; c1++)	{
+			for (int c2=0; c2<CIRCLE_QNT; c2++)	{
+				while (Get_Flag_1_Sec() == 0) {}
+				Set_Flag_1_Sec(0);
+				Measurement( &MyStr0, c2);
+			}
+			for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
+				sprintf(DataChar,"  B%dA%d\t", (int)c0, (int)c1 );
+				HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+				MyStr1.point_u32[channel_u8][c1] = Calc_Average(MyStr0.point_u32[channel_u8], CIRCLE_QNT);
+			}
+		}
+		for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
+			sprintf(DataChar,"  B%d\t", (int)c0 );
+			HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+			MyStr2.point_u32[channel_u8][c0] = Calc_Average(MyStr1.point_u32[channel_u8], CIRCLE_QNT);
+		}
+	}
+
+	uint32_t aver_res_u32[DEVICE_QNT];
+	for (uint8_t channel_u8 = 0; channel_u8 < DEVICE_QNT; channel_u8++) {
+		sprintf(DataChar,"  C\t" );
+		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+		aver_res_u32[channel_u8] = Calc_Average(MyStr2.point_u32[channel_u8], CIRCLE_QNT);
+
+		sprintf(DataChar," (%d)\r\n", (int)aver_res_u32[channel_u8] );
+		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, strlen(DataChar), 100);
+	}
+}//while(1)
 
 	if (Get_Flag_1_Sec() == 1) {
 		Set_Flag_1_Sec(0);
@@ -219,7 +252,7 @@ while (1) {
 									(int)aver_res_u32[8],
 									(int)aver_res_u32[9] );
 
-					RingBuffer_DMA_Main( http_req_1, http_req_2 );
+					//RingBuffer_DMA_Main( http_req_1, http_req_2 );
 				}
 			}
 		}
