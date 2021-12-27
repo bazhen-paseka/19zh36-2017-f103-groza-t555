@@ -115,6 +115,7 @@ int main(void)
 	PointStr MyStr3 = {0};
 	char DataChar[0xFF];
 
+	Groza_t55_init();
 	RingBuffer_DMA_Connect();
 	Groza_t55_init();
 
