@@ -174,7 +174,6 @@ while (1) {
 	}
 
 	char http_req[0xFF] = { 0 } ;
-	char apiKey1[] = THINGSPEAK_API_KEY_1 ;
 	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
 					(int)aver_res_u32[0],
 					(int)aver_res_u32[1],
@@ -184,6 +183,7 @@ while (1) {
 					(int)aver_res_u32[5],
 					(int)aver_res_u32[6],
 					(int)aver_res_u32[7] );
+	char apiKey1[] = THINGSPEAK_API_KEY_1 ;
 	RingBuffer_DMA_Main(http_req, apiKey1);
 	HAL_Delay(500);
 
@@ -192,6 +192,23 @@ while (1) {
 					(int)aver_res_u32[9] );
 	char apiKey2[] = THINGSPEAK_API_KEY_2 ;
 	RingBuffer_DMA_Main(http_req, apiKey2);
+	HAL_Delay(500);
+
+	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+						(int) MyStr0.zerone_u32[0] ,
+						(int) MyStr0.zerone_u32[1] ,
+						(int) MyStr0.zerone_u32[2] ,
+						(int) MyStr0.zerone_u32[3] ,
+						(int) MyStr0.zerone_u32[4] ,
+						(int) MyStr0.zerone_u32[5] ,
+						(int) MyStr0.zerone_u32[6] ,
+						(int) MyStr0.zerone_u32[7] ) ;
+	char apiKey3[] = THINGSPEAK_API_KEY_3 ;
+	RingBuffer_DMA_Main(http_req, apiKey3);
+
+	for (int d=0; d < DEVICE_QNT; d++) {
+		MyStr0.zerone_u32[d] = 0;
+	}
 
     /* USER CODE END WHILE */
 
