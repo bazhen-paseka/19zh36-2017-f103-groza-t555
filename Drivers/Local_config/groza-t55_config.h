@@ -5,7 +5,7 @@
 
 	#define SOFT_VERSION 		300U
 
-	#define DEVICE_QNT 			15U
+	#define DEVICE_QNT 			16U
 	#define CIRCLE_QNT 			5U
 
 	#define STROBE_DURATION		10UL
