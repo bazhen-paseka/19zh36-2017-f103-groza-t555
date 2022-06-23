@@ -116,14 +116,14 @@ int main(void)
 	char DataChar[0xFF];
 
 	Groza_t55_init();
-	RingBuffer_DMA_Connect();
-	Groza_t55_init();
-
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
 	HAL_GPIO_WritePin(BUTTON_GND_GPIO_Port, BUTTON_GND_Pin, RESET );
 	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
-		Measurement( &MyStr0, 0);
+		Measurement( &MyStr0, 0 );
 	}
+	RingBuffer_DMA_Connect();
+	Groza_t55_init();
+
 	//	HAL_TIM_Base_Start(&htim3);
 	HAL_TIM_Base_Start_IT(&htim3);
 
