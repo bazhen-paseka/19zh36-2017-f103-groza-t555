@@ -189,8 +189,8 @@ while (1) {
 					(int)aver_res_u32[ 5],
 					(int)aver_res_u32[ 6],
 					(int)aver_res_u32[ 7] );
-	char apiKey1[] = THINGSPEAK_API_KEY_4 ;
-	RingBuffer_DMA_Main(http_req, apiKey1);
+	char apiKey_0[] = THINGSPEAK_API_KEY_0 ;
+	RingBuffer_DMA_Main(http_req, apiKey_0);
 	HAL_Delay(500);
 
 	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
@@ -202,8 +202,8 @@ while (1) {
 					(int)aver_res_u32[13],
 					(int)aver_res_u32[14],
 					(int)aver_res_u32[15] );
-	char apiKey2[] = THINGSPEAK_API_KEY_5 ;
-	RingBuffer_DMA_Main(http_req, apiKey2);
+	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
+	RingBuffer_DMA_Main(http_req, apiKey_1);
 	HAL_Delay(500);
 
 	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
@@ -215,8 +215,8 @@ while (1) {
 					(int) MyStr0.zerone_u32[ 5] ,
 					(int) MyStr0.zerone_u32[ 6] ,
 					(int) MyStr0.zerone_u32[ 7] ) ;
-	char apiKey3[] = THINGSPEAK_API_KEY_6 ;
-	RingBuffer_DMA_Main(http_req, apiKey3);
+	char apiKey_2[] = THINGSPEAK_API_KEY_2 ;
+	RingBuffer_DMA_Main(http_req, apiKey_2);
 	HAL_Delay(500);
 
 	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
@@ -228,8 +228,8 @@ while (1) {
 						(int) MyStr0.zerone_u32[13] ,
 						(int) MyStr0.zerone_u32[14] ,
 						(int) MyStr0.zerone_u32[15] ) ;
-	char apiKey4[] = THINGSPEAK_API_KEY_7 ;
-	RingBuffer_DMA_Main(http_req, apiKey4);
+	char apiKey_3[] = THINGSPEAK_API_KEY_3 ;
+	RingBuffer_DMA_Main(http_req, apiKey_3);
 
 
 	for (int d=0; d < DEVICE_QNT; d++) {
