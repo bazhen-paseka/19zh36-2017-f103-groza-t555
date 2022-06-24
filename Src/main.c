@@ -116,11 +116,17 @@ int main(void)
 	char DataChar[0xFF];
 
 	Groza_t55_init();
+
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
 	HAL_GPIO_WritePin(BUTTON_GND_GPIO_Port, BUTTON_GND_Pin, RESET );
 	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
 		Measurement( &MyStr0, 0 );
 	}
+	for (int i=0; i<60; i++) {	// wait for router ready
+		Measurement( &MyStr0, 0 );
+		HAL_Delay(300);
+	}
+
 	RingBuffer_DMA_Connect();
 	Groza_t55_init();
 
