@@ -112,14 +112,14 @@ int main(void)
 
 	Groza_t55_init();
 	DS18b20_Print_serial_number(&huart1);
-	while(1) {
+	//while(1) {
 		DS18b20_ConvertTemp_SkipROM ();
 		HAL_Delay(1000);
 		int temp_int = DS18b20_Get_Temp_SkipROM ();
 		sprintf(DataChar, "DS18b20 = %d;\r\n",temp_int);
 		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, sizeof(DataChar), 100);
-		HAL_Delay(4000);
-	}
+	//	HAL_Delay(4000);
+	//}
 
 
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
@@ -193,43 +193,9 @@ while (1) {
 		aver_res_u32[device] = Calc_Average(MyStr3.point_u32[device], CIRCLE_QNT);
 	}
 
+	DS18b20_ConvertTemp_SkipROM ();
+
 	char http_req[0xFF] = { 0 } ;
-	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
-					(int) aver_res_u32[ 0] ,
-					(int) aver_res_u32[ 1] ,
-					(int) aver_res_u32[ 2] ,
-					(int) aver_res_u32[ 3] ,
-					(int) aver_res_u32[ 4] ,
-					(int) aver_res_u32[ 5] ,
-					(int) aver_res_u32[ 6] ,
-					(int) aver_res_u32[ 7] );
-	char apiKey_0[] = THINGSPEAK_API_KEY_0 ;
-	RingBuffer_DMA_Main(http_req, apiKey_0);
-	HAL_Delay(500);
-
-#if ( FIRST8 == 1 )
-	sprintf(http_req, "&field1=%d&field2=%d\r\n\r\n",
-					(int)((aver_res_u32[12]*4)/10),
-					(int)aver_res_u32[14] );
-	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
-	RingBuffer_DMA_Main(http_req, apiKey_1);
-	HAL_Delay(500);
-
-#elif ( NEXT12	== 1)
-	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
-					(int) aver_res_u32[ 8] ,
-					(int) aver_res_u32[ 9] ,
-					(int) aver_res_u32[10] ,
-					(int) aver_res_u32[11] ,
-					(int) aver_res_u32[12] ,
-					(int) aver_res_u32[13] ,
-					(int) aver_res_u32[14] ,
-					(int) aver_res_u32[15] );
-	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
-	RingBuffer_DMA_Main(http_req, apiKey_1);
-	HAL_Delay(500);
-#endif
-
 	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
 					(int) MyStr0.zerone_u32[ 0] ,
 					(int) MyStr0.zerone_u32[ 1] ,
@@ -255,6 +221,49 @@ while (1) {
 	char apiKey_3[] = THINGSPEAK_API_KEY_3 ;
 	RingBuffer_DMA_Main(http_req, apiKey_3);
 
+	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+					(int) aver_res_u32[ 0] ,
+					(int) aver_res_u32[ 1] ,
+					(int) aver_res_u32[ 2] ,
+					(int) aver_res_u32[ 3] ,
+					(int) aver_res_u32[ 4] ,
+					(int) aver_res_u32[ 5] ,
+					(int) aver_res_u32[ 6] ,
+					(int) aver_res_u32[ 7] );
+	char apiKey_0[] = THINGSPEAK_API_KEY_0 ;
+	RingBuffer_DMA_Main(http_req, apiKey_0);
+	HAL_Delay(500);
+
+	int ds18b20_int = DS18b20_Get_Temp_SkipROM ();
+
+#if ( FIRST8 == 1 )
+	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+					(int)((aver_res_u32[12]*4)/10),
+					(int)aver_res_u32[14],
+					(int)aver_res_u32[ 8],
+					(int)aver_res_u32[ 9],
+					(int)aver_res_u32[10],
+					(int)aver_res_u32[11],
+					(int)aver_res_u32[12],
+					(int) ds18b20_int      );
+	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
+	RingBuffer_DMA_Main(http_req, apiKey_1);
+	HAL_Delay(500);
+
+#elif ( NEXT12	== 1)
+	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+					(int) aver_res_u32[ 8] ,
+					(int) aver_res_u32[ 9] ,
+					(int) aver_res_u32[10] ,
+					(int) aver_res_u32[11] ,
+					(int) aver_res_u32[12] ,
+					(int) aver_res_u32[13] ,
+					(int) aver_res_u32[14] ,
+					(int) ds18b20_int       );
+	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
+	RingBuffer_DMA_Main(http_req, apiKey_1);
+	HAL_Delay(500);
+#endif
 
 	for (int d=0; d < DEVICE_QNT; d++) {
 		MyStr0.zerone_u32[d] = 0;
