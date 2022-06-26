@@ -5,6 +5,9 @@
 
 	#define SOFT_VERSION 		300U
 
+	//#define FIRST8				1
+	#define NEXT12				1
+
 	#define DEVICE_QNT 			16U
 	#define CIRCLE_QNT 			5U
 

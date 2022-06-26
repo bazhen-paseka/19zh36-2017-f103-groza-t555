@@ -22,7 +22,6 @@
 #include "adc.h"
 #include "dma.h"
 #include "i2c.h"
-#include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -106,7 +105,6 @@ int main(void)
   MX_USART3_UART_Init();
   MX_TIM3_Init();
   MX_I2C1_Init();
-  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 
 	PointStr MyStr0 = {0};
@@ -122,10 +120,19 @@ int main(void)
 	while (HAL_GPIO_ReadPin(BUTTON_INPUT_GPIO_Port, BUTTON_INPUT_Pin ) == GPIO_PIN_RESET ) {
 		Measurement( &MyStr0, 0 );
 	}
+
+#if ( FIRST8 == 1 )
 	for (int i=0; i<60; i++) {	// wait for router ready
 		Measurement( &MyStr0, 0 );
 		HAL_Delay(300);
 	}
+
+#elif ( NEXT12	== 1)
+	for (int i=0; i<70; i++) {	// wait for router ready
+		Measurement( &MyStr0, 0 );
+		HAL_Delay(300);
+	}
+#endif
 
 	RingBuffer_DMA_Connect();
 	Groza_t55_init();
@@ -193,25 +200,28 @@ while (1) {
 	RingBuffer_DMA_Main(http_req, apiKey_0);
 	HAL_Delay(500);
 
-//	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
-//					(int) aver_res_u32[ 8] ,
-//					(int) aver_res_u32[ 9] ,
-//					(int) aver_res_u32[10] ,
-//					(int) aver_res_u32[11] ,
-//					(int) aver_res_u32[12] ,
-//					(int) aver_res_u32[13] ,
-//					(int) aver_res_u32[14] ,
-//					(int) aver_res_u32[15] );
-//	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
-//	RingBuffer_DMA_Main(http_req, apiKey_1);
-//	HAL_Delay(500);
-
+#if ( FIRST8 == 1 )
 	sprintf(http_req, "&field1=%d&field2=%d\r\n\r\n",
-					(int)aver_res_u32[12],
+					(int)((aver_res_u32[12]*4)/10),
 					(int)aver_res_u32[14] );
-	char apiKey2[] = THINGSPEAK_API_KEY_1 ;
-	RingBuffer_DMA_Main(http_req, apiKey1);
+	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
+	RingBuffer_DMA_Main(http_req, apiKey_1);
 	HAL_Delay(500);
+
+#elif ( NEXT12	== 1)
+	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
+					(int) aver_res_u32[ 8] ,
+					(int) aver_res_u32[ 9] ,
+					(int) aver_res_u32[10] ,
+					(int) aver_res_u32[11] ,
+					(int) aver_res_u32[12] ,
+					(int) aver_res_u32[13] ,
+					(int) aver_res_u32[14] ,
+					(int) aver_res_u32[15] );
+	char apiKey_1[] = THINGSPEAK_API_KEY_1 ;
+	RingBuffer_DMA_Main(http_req, apiKey_1);
+	HAL_Delay(500);
+#endif
 
 	sprintf(http_req, "&field1=%d&field2=%d&field3=%d&field4=%d&field5=%d&field6=%d&field7=%d&field8=%d\r\n\r\n",
 					(int) MyStr0.zerone_u32[ 0] ,
