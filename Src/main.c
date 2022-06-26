@@ -21,7 +21,6 @@
 #include "main.h"
 #include "adc.h"
 #include "dma.h"
-#include "i2c.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
@@ -32,8 +31,6 @@
 	#include "groza-t55_sm.h"
 	#include "ringbuffer_dma_sm.h"
 	#include "groza-t55_config.h"
-	#include "nrf24l01_config.h"
-	#include "lcd1602_fc113_sm.h"
 
 /* USER CODE END Includes */
 
@@ -104,7 +101,6 @@ int main(void)
   MX_TIM4_Init();
   MX_USART3_UART_Init();
   MX_TIM3_Init();
-  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
 	PointStr MyStr0 = {0};
