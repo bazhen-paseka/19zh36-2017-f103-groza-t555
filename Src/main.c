@@ -31,6 +31,7 @@
 	#include "groza-t55_sm.h"
 	#include "ringbuffer_dma_sm.h"
 	#include "groza-t55_config.h"
+	#include "ds18b20_sm.h"
 
 /* USER CODE END Includes */
 
@@ -107,9 +108,19 @@ int main(void)
 	PointStr MyStr1 = {0};
 	PointStr MyStr2 = {0};
 	PointStr MyStr3 = {0};
-	char DataChar[0xFF];
+	char DataChar[0xFF] = {0};
 
 	Groza_t55_init();
+	DS18b20_Print_serial_number(&huart1);
+	while(1) {
+		DS18b20_ConvertTemp_SkipROM ();
+		HAL_Delay(1000);
+		int temp_int = DS18b20_Get_Temp_SkipROM ();
+		sprintf(DataChar, "DS18b20 = %d;\r\n",temp_int);
+		HAL_UART_Transmit(&huart1, (uint8_t *)DataChar, sizeof(DataChar), 100);
+		HAL_Delay(4000);
+	}
+
 
 	HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, SET) ;
 	HAL_GPIO_WritePin(BUTTON_GND_GPIO_Port, BUTTON_GND_Pin, RESET );
