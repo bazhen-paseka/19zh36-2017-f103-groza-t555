@@ -10,3 +10,5 @@
 [submodule "Drivers/adc_light_stm32f103_hal_sm"]
 	path = Drivers/adc_light_stm32f103_hal_sm
 	url = https://github.com/bazhen-paseka/adc_light_stm32f103_hal_sm.git
+[submodule "Drivers/temp_ds18b20_sm"]
+	url = git@github.com:bazhen-paseka/temp_ds18b20_sm.git
