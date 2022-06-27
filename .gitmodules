@@ -10,12 +10,5 @@
 [submodule "Drivers/adc_light_stm32f103_hal_sm"]
 	path = Drivers/adc_light_stm32f103_hal_sm
 	url = https://github.com/bazhen-paseka/adc_light_stm32f103_hal_sm.git
-[submodule "Drivers/lcd1602_fc113_sm"]
-	path = Drivers/lcd1602_fc113_sm
-	url = https://github.com/bazhen-paseka/lcd1602_fc113_sm.git
-[submodule "Drivers/i2c_TechMaker_sm"]
-	path = Drivers/i2c_TechMaker_sm
-	url = https://github.com/bazhen-paseka/i2c_TechMaker_sm.git
-[submodule "Drivers/nrf24l01_sm"]
-	path = Drivers/nrf24l01_sm
-	url = https://github.com/bazhen-paseka/nrf24l01_sm.git
+[submodule "Drivers/temp_ds18b20_sm"]
+	url = git@github.com:bazhen-paseka/temp_ds18b20_sm.git

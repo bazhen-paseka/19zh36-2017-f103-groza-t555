@@ -78,10 +78,10 @@ void Error_Handler(void);
 #define CHANNEL_4_Pin GPIO_PIN_4
 #define CHANNEL_4_GPIO_Port GPIOA
 #define CHANNEL_4_EXTI_IRQn EXTI4_IRQn
-#define CE_Pin GPIO_PIN_12
-#define CE_GPIO_Port GPIOB
-#define CSN_Pin GPIO_PIN_8
-#define CSN_GPIO_Port GPIOA
+#define DQ_WRITE_Pin GPIO_PIN_12
+#define DQ_WRITE_GPIO_Port GPIOB
+#define DQ_READ_Pin GPIO_PIN_13
+#define DQ_READ_GPIO_Port GPIOB
 #define BUTTON_GND_Pin GPIO_PIN_8
 #define BUTTON_GND_GPIO_Port GPIOB
 #define BUTTON_INPUT_Pin GPIO_PIN_9

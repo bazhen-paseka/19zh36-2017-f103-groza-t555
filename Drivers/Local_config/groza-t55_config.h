@@ -3,9 +3,12 @@
 #define GROZA_T55_CONFIG_H_INCLUDED
 //******************************************************************************************
 
-	#define SOFT_VERSION 		260U
+	#define SOFT_VERSION 		300U
 
-	#define DEVICE_QNT 			10U
+	//#define FIRST8				1
+	#define NEXT12				1
+
+	#define DEVICE_QNT 			16U
 	#define CIRCLE_QNT 			5U
 
 	#define STROBE_DURATION		10UL
